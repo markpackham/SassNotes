@@ -8,6 +8,7 @@ The input (main.scss)
 The location of where to place that output (main.css)
 */
 
+
 /*NESTING  (main reason to bother with Sass)*/
 @import url(https://fonts.googleapis.com/css?family=Pacifico);
 //Add variables here:
@@ -59,6 +60,8 @@ h1 {
   }
 }
 
+
+
 /* Nesting Properties   if you append a : colon suffix after the name of the property*/
 @import url(https://fonts.googleapis.com/css?family=Pacifico);
 //Add variables here:
@@ -106,6 +109,8 @@ h1 {
   }
 }
 
+
+
 /* Variables (now available in latest version of CSS), still easier to write in Sass
 just using "$"  so $translucent-white: rgba(255,255,255,0.3);
 call the variable like this
@@ -141,6 +146,8 @@ Maps
 Nesting and variables are just two ways that Sass keeps stylesheets clean. In the next unit, you’ll learn about other Sass constructs that serve the same purpose.
 */
 
+
+
 /* & Selector in Nesting */
 /*
 the & character is used to specify exactly where a parent selector should be inserted. It also helps write psuedo classes in a much less repetitive way.
@@ -158,6 +165,8 @@ will compile to the following CSS:
 .notecard:hover {
   transform: rotatey(-180deg);
 }
+
+
 
 /* 
 mixin lets you make groups of CSS declarations that you want to reuse throughout your site. 
@@ -197,6 +206,7 @@ is equivalent to the following CSS:
   -ms-backface-visibility: hidden;
   -o-backface-visibility: hidden;
 }
+
 
 /*
 Default Value Argument
@@ -246,6 +256,8 @@ div {
   @include dashed-border(color: purple, width: 5px);
 }
 
+
+
 //Map
 //create a map with these properties in case we ever want to update or reference them.
 $college-ruled-style: (
@@ -261,6 +273,8 @@ $college-ruled-style: (
   height: 100%;
   @include stripes($college-ruled-style...);
 }
+
+
 
 //String Interpolation (just like back ticks in JavaScript & $() in C#
 //In Sass, string interpolation is the process of placing a variable string in the middle of two other strings.
@@ -285,6 +299,8 @@ The notation is as follows:
   width: 60%;
   margin: 0px auto;
 }
+
+
 
 //& Selector in Mixins
 /*
@@ -331,6 +347,7 @@ String interpolation is the glue that allows you to insert a string in the middl
 Its applications vary, but the ability to interpolate is especially useful for passing in file names.
 */
 
+
 //Functions
 //fade-out makes a color more transparent by taking a number between 0 and 1 and decreasing opacity, or the alpha channel, by that amount:
 $color: rgba(39, 39, 39, 0.5);
@@ -343,3 +360,300 @@ $amount: 0.1;
 $color2: fade-in($color, $amount); //rgba(55,7,56, 0.6)
 //The function adjust-hue($color, $degrees) changes the hue of a color by taking color and a number of degrees
 //(usually between -360 degrees and 360 degrees), and rotate the color wheel by that amount.
+
+
+//Color Functions (now available in the latet version of CSS)
+/*
+Sass also allows us to perform mathematical functions to compute measurements— including colors.
+
+Here is how Sass computes colors:
+
+    The operation is performed on the red, green, and blue components.
+    It computes the answer by operating on every two digits.
+
+$color: #010203 + #040506;
+
+The above would compute piece-wise as follows:
+
+01 + 04 = 05
+02 + 05 = 07
+03 + 06 = 09
+
+and compile to:
+
+color: #050709;
+
+To get purple try
+color: red + blue;
+
+Sass arithmetic can also compute HSLA and string colors such as red and blue.
+*/
+
+
+/*
+Arithmetic
+
+The Sass arithmetic operations are:
+
+    addition +
+    subtraction -
+    multiplication *
+    division /, and
+    modulo %.
+
+Note: Modulo, or %, is the remainder in a given division, so “9%2” would be “1”.
+
+SCSS arithmetic requires that the units are compatible; for example, you can’t multiply pixels by ems.
+
+Also, just like in regular math, multiplying two units together results in squared units:10px * 10px = 100px * px.
+
+Since there is no such thing as squared units in CSS, the above would throw an error. You would need to multiply 10px * 10 in order to obtain 100px.
+*/
+height: $width/6;
+line-height: $width/6;
+
+/* Division symbol confusion
+In CSS the / character can be used as a separator. In Sass, the character is also used in division.
+
+Here are the specific instances / counts as division:
+
+    If the value, or any part of it, is stored in a variable or returned by a function.
+    If the value is surrounded by parentheses, unless those parentheses are outside a list and the value is inside.
+    If the value is used as part of another arithmetic expression.
+
+Here are a few examples:
+
+width: $variable/6; //division
+line-height: (600px)/9; //division
+margin-left: 20-10 px/ 2; //division
+font-size: 10px/8px; //not division
+*/
+$width: 250px;
+font-size: $width/6/2;
+
+
+//Each Loop (handy for Lists)
+@each $item in $list {
+  //some rules and or conditions
+}
+//The value of $item is dynamically assigned to the value of the object in the list according to its position and the iteration of the loop.
+$list: (orange, purple, teal);
+//Loop through the list so every item gets a unique background color
+@each $item in $list {
+  .#{$item} {
+    background: $item;
+  }
+}
+
+
+//For Loops
+@for $i from $begin through $end {
+  //some rules and or conditions
+}
+/*
+In the example above:
+$i is just a variable for the index, or position of the element in the list
+$begin and $end are placeholders for the start and end points of the loop.
+The keywords through and to are interchangeable in Sass
+*/
+$total: 10; //Number of .ray divs in our html
+$step: 360deg / $total; //Used to compute the hue based on color-wheel
+.ray {
+  height: 30px;
+}
+//dance through the colorwheel by using the color function modify the background color
+@for $i from 1 through $total {
+  .ray:nth-child(#{$i}) {
+    background: adjust-hue(blue, $i * $step);
+   }
+}
+//CSS created from that loop
+.ray:nth-child(1) {
+  background: #9900ff;
+}
+
+.ray:nth-child(2) {
+  background: #ff00cc;
+}
+
+.ray:nth-child(3) {
+  background: #ff0033;
+}
+
+.ray:nth-child(4) {
+  background: #ff6600;
+}
+
+.ray:nth-child(5) {
+  background: yellow;
+}
+
+.ray:nth-child(6) {
+  background: #66ff00;
+}
+
+.ray:nth-child(7) {
+  background: #00ff33;
+}
+
+.ray:nth-child(8) {
+  background: #00ffcc;
+}
+
+.ray:nth-child(9) {
+  background: #0099ff;
+}
+
+.ray:nth-child(10) {
+  background: blue;
+}
+
+
+//Conditionals / If statements
+//@if, @else-if, and @else directives allow for more flexibility.
+
+@mixin deck($suit) {
+ @if($suit == hearts || $suit == spades){
+   color: blue;
+ }
+ @else-if($suit == clovers || $suit == diamonds){
+   color: red;
+ }
+ @else{
+   //some rule
+ }
+}
+
+
+//changing the width of a .ray based on whether the element falls on an even or odd number
+$total: 10; //Number of .ray divs in our html
+$step: 360deg / $total; //Used to compute the hue based on color-wheel
+.ray {
+  height: 30px;
+}
+@for $i from 1 through $total {
+	.ray:nth-child(#{$i}){
+		background: adjust-hue(blue, $i * $step);
+    width: if($i % 2 == 0, 300px, 350px);
+		margin-left: if($i % 2 == 0, 0px, 50px);
+	}
+}
+
+/*
+Functions in Sass allow for an easier way to style pages, work with colors, and iterate on DOM elements.
+Having both for loops and each loops gives the programmer different formats to iterate on both lists and maps.
+The introduction of conditional statements allows you to create logic-based styling rules using SCSS.
+*/
+
+
+
+//SASS structure & long term planning
+/*
+@Import in SCSS
+
+In addition to having a solid file structure, a big part of staying organized is splitting up the logic into smaller manageable components.
+
+Sass extends the existing CSS @import rule to allow including other SCSS and Sass files.
+
+    Typically, all imported SCSS files are imported into a main SCSS file which is then combined to make a single CSS output file.
+    The main/global SCSS file has access to any variables or mixins defined in its imported files. The `@import command takes a filename to import.
+
+By default, @import looks for a Sass file in the same or otherwise specified directory but there are a few 
+circumstances where it will behave just like a CSS @import rule:
+
+    If the file’s extension is .css.
+    If the filename begins with http://.
+    If the filename is a url().
+    If the @import has any media queries.
+
+In addition to keeping code organized, importing files can also save you from repeating code. 
+For example, if multiple SCSS files reference the same variables, importing a file with variables partial would save the trouble of redefining them each time.
+*/
+
+//Partials, in Sass are the files you split up to organize specific functionality in the codebase.
+/*
+They use a _ prefix notation in the file name that tells Sass to hold off on compiling the file individually and instead import it.
+*/
+_filename.scss
+/*
+    To import this partial into the main file - or the file that encapsulates the important rules and the bulk of the project styles - omit the underscore.
+
+For example, to import a file named _variables.scss, add the following line of code:
+*/
+  @import "variables";
+
+  /*
+The global file imports all the components and centralizes the logic.
+*/
+
+
+//@Extend  (this is just like a sub class inheriting from a superclass so it can steal all it's abilities & is another good reason to use Sass)
+.lemonade {
+  border: 1px yellow;
+  background-color: #fdd;
+}
+.strawberry {
+  @extend .lemonade;
+  border-color: pink;
+}
+
+//If you observe CSS output, you can see how @extend is working to apply the .lemonade rules to .strawberry:
+.lemonade, .strawberry {
+  border: 1px yellow;
+  background-color: #fdd;
+}
+
+.strawberry {
+  @extend .lemonade;
+  border-color: pink;
+}
+
+
+//%Placeholders
+/*
+Sometimes, you may create classes solely for 
+the purpose of extending them and never actually use them inside your HTML.
+Sass anticipated this and allows for a special type of selector called a placeholder, 
+which behaves just like a class or id selector, but use the % notation instead of # or .
+*/
+a%drink {
+  font-size: 2em;
+  background-color: $lemon-yellow;
+}
+
+.lemonade {
+@extend %drink;
+//more rules
+}
+
+would translate to
+
+a.lemonade {
+  font-size: 2em;
+  background-color: $lemon-yellow;
+}
+
+.lemonade {
+//more rules
+}
+
+
+
+
+//@Extend vs Mixin
+/*
+extending results in way cleaner and more efficient output with as little repetition as possible.
+
+As a general rule of thumb, you should
+    Try to only create mixins that take in an argument, otherwise you should extend.
+    Always look at your CSS output to make sure your extend is behaving as you intended.
+*/
+
+
+/*
+Sustainability is key in Sass, planning out the structure of your files and sticking to naming conventions for both variables, 
+mixins, and selectors can reduce complexity.
+Understanding CSS output is also essential to writing sustainable SCSS. In order to make the best choices about what functions and 
+directives to use, it is important to first understand how this will translate in CSS.
+Mixins should only be used if they take in an argument, otherwise, you should extend the selector’s rules, whether it be a class, id, or placeholder.
+*/
