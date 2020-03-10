@@ -1,8 +1,7 @@
 @import "config";
-@import "utils";
-@import "buttons";
 
-// _style.scss
+// _style.scss, only deploy your css file live, save file space
+// scss is normally only for local work
 * {
   box-sizing: border-box;
   margin: 0;
@@ -57,6 +56,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 30px;
 
     img {
       width: 50%;
@@ -68,3 +68,10 @@ a {
     }
   }
 }
+
+// Other mixins
+@import "utils";
+@import "buttons";
+
+// Media queries
+@import "media";
