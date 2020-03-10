@@ -19,10 +19,12 @@
 
 .btn-primary {
   background-color: #418bff;
+  color: #fff;
 }
 
 .btn-secondary {
   background-color: #995100;
+  color: #fff;
 }
 
 * {
@@ -75,12 +77,12 @@ a {
   padding: 15px;
 }
 
-.showcase nav a:hover {
-  color: #ff8700;
+.showcase nav a {
+  color: #fff;
 }
 
-.showcase a {
-  color: #fff;
+.showcase nav a:hover {
+  color: #ff8700;
 }
 
 .showcase-content {
@@ -103,9 +105,5 @@ a {
 .showcase-content h1 {
   font-size: 50px;
   line-height: 1.2;
-}
-
-.showcase-content p {
-  margin: 20px 0;
 }
 /*# sourceMappingURL=style.css.map */

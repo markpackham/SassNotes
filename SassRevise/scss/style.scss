@@ -24,9 +24,8 @@ a {
 }
 
 .showcase {
-  background-color: $primary-color;
-  // calling a function from config
-  color: set-text-color($primary-color);
+  // using a Mixin from _config.scss
+  @include set-background($primary-color);
   height: 600px;
 
   nav {
@@ -43,12 +42,13 @@ a {
       padding: 15px;
     }
 
+    a {
+      color: set-text-color($primary-color);
+    }
+
     a:hover {
       color: $secondary-color;
     }
-  }
-  a {
-    color: set-text-color($primary-color);
   }
 
   // & means the parent so "showcase-content"
@@ -65,10 +65,6 @@ a {
     h1 {
       font-size: 50px;
       line-height: 1.2;
-    }
-
-    p {
-      margin: 20px 0;
     }
   }
 }
